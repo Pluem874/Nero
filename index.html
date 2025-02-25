@@ -32,7 +32,7 @@
   <h1>Arduino TDS Data</h1>
   <div class="container">
     <p>Current TDS Value:</p>
-    <p id="tds-value">Loading...</p>
+    <p id="tdsvalue">Loading...</p>
   </div>
 
   <!-- Include Firebase SDK -->
@@ -63,10 +63,10 @@
     // Fetch and display TDS data in real-time
     tdsRef.on("value", (snapshot) => {
       const tdsValue = snapshot.val();
-      document.getElementById("tds-value").textContent = tdsValue + " ppm";
+      document.getElementById("tdsvalue").textContent = tdsValue + " ppm";
     }, (error) => {
       console.error("Error fetching data: ", error);
-      document.getElementById("tds-value").textContent = "Error loading data";
+      document.getElementById("tdsvalue").textContent = "Error loading data";
     });
   </script>
 </body>
