@@ -61,6 +61,7 @@
 
     // Reference to the TDS value in Realtime Database
     const tdsRef = db.ref("tdsValue"); // Replace with your node path
+    console.log("Listening to node:", tdsRef);
 
     // Fetch and display TDS data in real-time
     tdsRef.on("value", (snapshot) => {
