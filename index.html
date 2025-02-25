@@ -50,3 +50,26 @@
       messagingSenderId: "356218401977",
       appId: "1:356218401977:web:8cb072810fa0f4bc975768"
     };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized:", app); // Debugging
+
+    // Initialize Realtime Database
+    const db = firebase.database();
+
+    // Reference to the TDS value in Realtime Database
+    const tdsRef = db.ref("tdsValue"); // Replace with your node path
+
+    // Fetch and display TDS data in real-time
+    tdsRef.on("value", (snapshot) => {
+      const tdsValue = snapshot.val();
+      console.log("TDS value updated:", tdsValue); // Debugging
+      document.getElementById("tds-value").textContent = tdsValue + " ppm";
+    }, (error) => {
+      console.error("Error fetching data: ", error);
+      document.getElementById("tds-value").textContent = "Error loading data";
+    });
+  </script>
+</body>
+</html>
