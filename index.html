@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Realtime Database</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    #data-container {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Data from Firebase Realtime Database</h1>
+  <div id="data-container">Loading data...</div>
+
+  <!-- Include Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js"></script>
+
+  <script>
+    // Firebase configuration (replace with your Firebase project config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBt-GMnQLX-fk4kUoBTgCer5jTJ2vXBOXE",
+      authDomain: "nero-pipes.firebaseapp.com",
+      databaseURL: "https://nero-pipes-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "nero-pipes",
+      storageBucket: "nero-pipes.firebasestorage.app",
+      messagingSenderId: "356218401977",
+      appId: "1:356218401977:web:8cb072810fa0f4bc975768",
+      measurementId: "G-PQMV430S9Y"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+
+    // Initialize Realtime Database
+    const db = firebase.database();
+
+    // Reference to a Realtime Database node (replace "your-node-name" with your node path)
+    const dataRef = db.ref("/");
+
+    // Fetch data from Realtime Database
+    dataRef.on("value", (snapshot) => {
+      const data = snapshot.val();
+      const dataContainer = document.getElementById("data-container");
+      dataContainer.innerHTML = ""; // Clear loading message
+
+      if (!data) {
+        dataContainer.innerHTML = "<p>No data found.</p>";
+        return;
+      }
+
+      // Display data
+      dataContainer.innerHTML = `
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      `;
+    }, (error) => {
+      console.error("Error fetching data: ", error);
+      document.getElementById("data-container").innerHTML = `<p>Error: ${error.message}</p>`;
+    });
+  </script>
+</body>
+</html>
