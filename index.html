@@ -3,26 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Realtime Database</title>
+  <title>Arduino TDS Data</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      text-align: center;
     }
     h1 {
       color: #333;
     }
-    #data-container {
+    #tds-value {
+      font-size: 2em;
+      color: #007BFF;
+      font-weight: bold;
+    }
+    .container {
       margin-top: 20px;
-      padding: 10px;
+      padding: 20px;
       border: 1px solid #ccc;
       background-color: #f9f9f9;
+      display: inline-block;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Data from Firebase Realtime Database</h1>
-  <div id="data-container">Loading data...</div>
+  <h1>Arduino TDS Data</h1>
+  <div class="container">
+    <p>Current TDS Value:</p>
+    <p id="tds-value">Loading...</p>
+  </div>
 
   <!-- Include Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
@@ -47,27 +58,16 @@
     // Initialize Realtime Database
     const db = firebase.database();
 
-    // Reference to a Realtime Database node (replace "your-node-name" with your node path)
-    const dataRef = db.ref("/");
+    // Reference to the TDS value in Realtime Database
+    const tdsRef = db.ref("tdsValue"); // Replace with your node path
 
-    // Fetch data from Realtime Database
-    dataRef.on("value", (snapshot) => {
-      const data = snapshot.val();
-      const dataContainer = document.getElementById("data-container");
-      dataContainer.innerHTML = ""; // Clear loading message
-
-      if (!data) {
-        dataContainer.innerHTML = "<p>No data found.</p>";
-        return;
-      }
-
-      // Display data
-      dataContainer.innerHTML = `
-        <pre>${JSON.stringify(data, null, 2)}</pre>
-      `;
+    // Fetch and display TDS data in real-time
+    tdsRef.on("value", (snapshot) => {
+      const tdsValue = snapshot.val();
+      document.getElementById("tds-value").textContent = tdsValue + " ppm";
     }, (error) => {
       console.error("Error fetching data: ", error);
-      document.getElementById("data-container").innerHTML = `<p>Error: ${error.message}</p>`;
+      document.getElementById("tds-value").textContent = "Error loading data";
     });
   </script>
 </body>
